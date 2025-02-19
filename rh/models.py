@@ -41,29 +41,29 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.nome
 
-
-class Setor(models.Model):
-    nome = models.CharField(max_length=200, unique=True, blank=False, null=False)
-    descricao = models.TextField(blank=True, null=True)  
-    codigo = models.CharField(max_length=20, unique=True, blank=False, null=False) 
-    data_criacao = models.DateTimeField(auto_now_add=True)  
+class Department(models.Model):
+    name = models.CharField(max_length=200, unique=True, blank=False, null=False)
+    description = models.TextField(blank=True, null=True)  
+    code = models.CharField(max_length=20, unique=True, blank=False, null=False) 
+    creation_date = models.DateTimeField(auto_now_add=True)  
     status = models.CharField(
         max_length=20, 
-        choices=[('Ativo', 'Ativo'), ('Inativo', 'Inativo')], 
-        default='Ativo'
+        choices=[('Active', 'Active'), ('Inactive', 'Inactive')], 
+        default='Active'
     )  
-    num_funcionarios = models.IntegerField(default=0)
-    def __str__(self):
-        return self.nome
-    
+    num_employees = models.IntegerField(default=0)
 
-class Funcionario(models.Model):
-    nome = models.CharField(max_length=400)
+    def __str__(self):
+        return self.name
+
+
+class Employee(models.Model):
+    name = models.CharField(max_length=400)
     cpf = models.CharField(max_length=11, unique=True, blank=False, null=False)
     rg = models.CharField(max_length=20, blank=False, null=False)
-    data_nascimento = models.DateField(blank=False, null=False)
+    birth_date = models.DateField(blank=False, null=False)
     ctps = models.CharField(max_length=20, blank=False, null=False)
-    setor = models.ForeignKey(Setor, on_delete=models.PROTECT) 
-    
+    department = models.ForeignKey(Department, on_delete=models.PROTECT) 
+
     def __str__(self):
-        return self.nome 
+        return self.name
