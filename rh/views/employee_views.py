@@ -11,9 +11,7 @@ def register_employee(request):
         rg = request.POST.get('rg')
         birth_date = request.POST.get('dt_nascimento')
         ctps = request.POST.get('ctps')
-        department_id = request.POST.get('departamento')  # Obtém o ID do departamento
-
-        # Verificar se os campos obrigatórios foram preenchidos
+        department_id = request.POST.get('departamento')  
         if name and cpf and rg and birth_date and ctps and department_id:
             fields_and_messages = {
                 'cpf': 'CPF já cadastrado!!',
@@ -52,12 +50,10 @@ def register_employee(request):
             messages.error(request, 'Falta preencher os campos obrigatórios!')
             return render(request, 'rh/home.html')
 
-    # Caso o método não seja POST, renderize a página com a lista de departamentos para escolha
     departments = Department.objects.all()
     return render(request, 'rh/index.html', {'departments': departments})
 
 def update_employee(request, employee_id):
-    # Obtém o funcionário com o ID fornecido
     employee = get_object_or_404(Employee, id=employee_id)
 
     if request.method == 'POST':
@@ -66,24 +62,22 @@ def update_employee(request, employee_id):
         rg = request.POST.get('rg')
         birth_date = request.POST.get('dt_nascimento')
         ctps = request.POST.get('ctps')
-        department_id = request.POST.get('departamento')  # Obtém o ID do departamento
+        department_id = request.POST.get('departamento')  
 
-        # Verificar se todos os campos obrigatórios foram preenchidos
         if name and cpf and rg and birth_date and ctps and department_id:
             try:
-                department = Department.objects.get(id=department_id)  # Obtém o departamento pelo ID
+                department = Department.objects.get(id=department_id)  
 
-                # Atualiza os dados do funcionário
                 employee.name = name
                 employee.cpf = cpf
                 employee.rg = rg
                 employee.birth_date = birth_date
                 employee.ctps = ctps
-                employee.department = department  # Atribui o departamento ao funcionário
+                employee.department = department  
                 employee.save()
 
                 messages.success(request, 'Funcionário atualizado com sucesso!')
-                return redirect('funcionarios_list')  # Substitua com a URL correta
+                return redirect('funcionarios_list')  
 
             except Department.DoesNotExist:
                 messages.error(request, 'Departamento inválido!')
@@ -97,8 +91,7 @@ def update_employee(request, employee_id):
             messages.error(request, 'Falta preencher os campos obrigatórios!')
             return render(request, 'rh/alterar_funcionario.html', {'employee': employee})
 
-    # Caso o método não seja POST, exibe os dados atuais do funcionário para edição
-    departments = Department.objects.all()  # Lista de departamentos
+    departments = Department.objects.all()  
     return render(request, 'rh/alterar_funcionario.html', {'employee': employee, 'departments': departments})
 
 

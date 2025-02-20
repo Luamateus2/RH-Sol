@@ -2,44 +2,44 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.utils.translation import gettext_lazy as _
 
-class UsuarioManager(BaseUserManager):
-    def create_user(self, email, nome, password=None):
+class UserManager(BaseUserManager):
+    def create_user(self, email, name, password=None):
         if not email:
-            raise ValueError('O campo email é obrigatório')
-        if not nome:
-            raise ValueError('O campo nome é obrigatório')
+            raise ValueError('The email field is required')
+        if not name:
+            raise ValueError('The name field is required')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, nome=nome)
+        user = self.model(email=email, name=name)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, nome, password=None):
-        user = self.create_user(email, nome, password)
+    def create_superuser(self, email, name, password=None):
+        user = self.create_user(email, name, password)
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
 
 
-class Usuario(AbstractBaseUser, PermissionsMixin):
-    nome = models.CharField(max_length=50, blank=False)
+class User(AbstractBaseUser, PermissionsMixin):
+    name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(max_length=100, unique=True, blank=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 
-    groups = models.ManyToManyField(Group, related_name='usuario_groups')
-    user_permissions = models.ManyToManyField(Permission, related_name='usuario_user_permissions')
+    groups = models.ManyToManyField(Group, related_name='user_groups')
+    user_permissions = models.ManyToManyField(Permission, related_name='user_user_permissions')
 
-    objects = UsuarioManager()
+    objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nome']
+    REQUIRED_FIELDS = ['name']
 
     def __str__(self):
-        return self.nome
+        return self.name
 
 class Department(models.Model):
     name = models.CharField(max_length=200, unique=True, blank=False, null=False)
