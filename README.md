@@ -113,7 +113,7 @@ DB_PORT=5432
 ### 5. Criar o Banco de Dados
 Caso ainda não tenha um banco de dados PostgreSQL configurado, crie um executando:
 ```sh
-psql -U seuusuario -c "CREATE DATABASE seubanco;"
+psql -U seuusuario -c "CREATE DATABASE rh;"
 ```
 
 ### 6. Aplicar Migrações
