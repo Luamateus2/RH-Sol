@@ -31,7 +31,7 @@ setup/
 |   |-- views/
 |   |   |-- employee_views.py  # Views relacionadas a funcionários
 |   |   |-- user_views.py      # Views relacionadas a usuários
-|   |-- models.py
+|   |-- models.py  # Definição dos modelos de dados
 |   |-- urls.py
 |   |-- admin.py
 |   |-- tests.py
@@ -40,11 +40,45 @@ setup/
 |-- requirements.txt  # Dependências do projeto
 ```
 
+## Modelos de Dados (models.py)
+
+### UserManager
+Gerencia a criação de usuários e superusuários.
+
+### User
+Modelo de usuário personalizado baseado em `AbstractBaseUser`.
+
+- `name`: Nome do usuário
+- `email`: E-mail (usado como campo de login)
+- `is_active`: Define se o usuário está ativo
+- `is_staff`: Define se o usuário tem acesso ao admin
+- `date_joined`: Data de criação do usuário
+
+### Department
+Modelo para departamentos da empresa.
+
+- `name`: Nome do departamento
+- `description`: Descrição opcional
+- `code`: Código único do departamento
+- `creation_date`: Data de criação do departamento
+- `status`: Status (Ativo/Inativo)
+- `num_employees`: Número de funcionários no departamento
+
+### Employee
+Modelo para funcionários.
+
+- `name`: Nome do funcionário
+- `cpf`: CPF (único)
+- `rg`: RG
+- `birth_date`: Data de nascimento
+- `ctps`: Número da carteira de trabalho
+- `department`: Relacionamento com `Department`
+
 ## Configuração do Ambiente
 
 ### 1. Clonar o Repositório
 ```sh
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/Luamateus2/RH-Sol.git
 cd rh-sol
 ```
 
@@ -60,10 +94,15 @@ venv\Scripts\activate  # Windows
 pip install -r requirements.txt
 ```
 
-### 4. Configurar o Arquivo `.env`
+### 4. Gerar a Secret Key e Configurar o Arquivo `.env`
+Para gerar uma `SECRET_KEY`, execute:
+```sh
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+
 Crie um arquivo `.env` na raiz do projeto e adicione:
 ```
-SECRET_KEY=suachavesecreta
+SECRET_KEY=sua_secret_key_gerada
 DB_NAME=seubanco
 DB_USER=seuusuario
 DB_PASSWORD=suasenha
@@ -71,17 +110,23 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
-### 5. Aplicar Migrações
+### 5. Criar o Banco de Dados
+Caso ainda não tenha um banco de dados PostgreSQL configurado, crie um executando:
+```sh
+psql -U seuusuario -c "CREATE DATABASE seubanco;"
+```
+
+### 6. Aplicar Migrações
 ```sh
 python manage.py migrate
 ```
 
-### 6. Criar um Superusuário (Opcional)
+### 7. Criar um Superusuário (Opcional)
 ```sh
 python manage.py createsuperuser
 ```
 
-### 7. Executar o Servidor
+### 8. Executar o Servidor
 ```sh
 python manage.py runserver
 ```
@@ -95,8 +140,9 @@ O sistema estará acessível em `http://127.0.0.1:8000/`
 - HTML, CSS, JavaScript
 
 ## Contato
-Caso tenha dúvidas ou sugestões, entre em contato.
+Caso tenha dúvidas ou sugestões, entre em contato através do e-mail: luanakarolineliramateus2021@gmail.com.
 
 ---
-Desenvolvido por [Seu Nome]
+Desenvolvido por Luana Karoline
+
 
